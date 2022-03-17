@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, StatusBar } from "react-native";
+import { StyleSheet, Text, View, StatusBar, SafeAreaView } from "react-native";
 import AppNavigation from "./src/AppNavigation/AppNavigation";
 
 export default function App() {
   return (
     <>
       <StatusBar />
+      <SafeAreaView />
       <AppNavigation />
     </>
   );

@@ -15,6 +15,7 @@ const HomeScreen = ({ navigation }) => {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
+  const [sound, setSound] = React.useState();
 
   async function startRecording() {
     try {
@@ -92,7 +93,16 @@ const HomeScreen = ({ navigation }) => {
                 </Text>
                 <Button
                   style={styles.button}
-                  onPress={() => recordingLine.sound.replayAsync()}
+                  onPress={async () => {
+                    console.log("Loading Sound");
+                    const { sound } = await Audio.Sound.createAsync(
+                      { uri: recordingLine.file },
+                      { shouldPlay: false }.file
+                    );
+                    setSound(sound);
+                    console.log("Playing Sound");
+                    await sound.playAsync();
+                  }}
                   title="Play"
                 ></Button>
               </View>
