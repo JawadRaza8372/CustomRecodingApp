@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
         });
-        setMessage("A");
+        setMessage("Recording");
 
         const { recording } = await Audio.Recording.createAsync(
           Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
   }
   async function stopRecording() {
     setRecording(undefined);
-    setMessage("");
+    setMessage("A");
     await recording.stopAndUnloadAsync();
 
     let updatedRecordings = [...recordings];
