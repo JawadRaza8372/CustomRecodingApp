@@ -5,7 +5,6 @@ export default function App() {
   return (
     <>
       <StatusBar />
-      <SafeAreaView />
       <AppNavigation />
     </>
   );

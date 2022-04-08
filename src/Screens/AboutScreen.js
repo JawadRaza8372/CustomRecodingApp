@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import ScreenHeader from "../Components/ScreenHeader";
 import { w, h } from "react-native-responsiveness";
 
 const AboutScreen = ({ navigation }) => {
   return (
-    <View style={styles.HomeScreendiv}>
+    <SafeAreaView style={styles.HomeScreendiv}>
       {/* screen header is a custom component for header in app */}
       <ScreenHeader
         title="About"
@@ -16,7 +16,7 @@ const AboutScreen = ({ navigation }) => {
       <View style={styles.otherContainer}>
         <Text style={styles.textStyle}>About me page</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

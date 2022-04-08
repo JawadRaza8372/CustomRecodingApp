@@ -5,6 +5,7 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ScreenHeader from "../Components/ScreenHeader";
@@ -16,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
   const [sound, setSound] = React.useState();
-
+  const [mycurrentRec, setmycurrentRec] = useState(null);
   async function startRecording() {
     try {
       const permission = await Audio.requestPermissionsAsync();
@@ -26,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
         });
-        setMessage("Recording");
+        setMessage("A");
 
         const { recording } = await Audio.Recording.createAsync(
           Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
@@ -54,6 +55,11 @@ const HomeScreen = ({ navigation }) => {
     });
 
     setRecordings(updatedRecordings);
+    setmycurrentRec({
+      sound: sound,
+      duration: getDurationFormatted(status.durationMillis),
+      file: recording.getURI(),
+    });
   }
   function getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
@@ -64,7 +70,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.HomeScreendiv}>
+    <SafeAreaView style={styles.HomeScreendiv}>
       {/* screen header is a custom component for header in app */}
       <ScreenHeader
         title="home"
@@ -85,7 +91,28 @@ const HomeScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
         <ScrollView contentContainerStyle={styles.recordingsView}>
-          {recordings.length > 0 &&
+          {mycurrentRec && (
+            <View style={styles.row}>
+              <Text style={styles.fill}>
+                Recording - {mycurrentRec.duration}
+              </Text>
+              <Button
+                style={styles.button}
+                onPress={async () => {
+                  console.log("Loading Sound");
+                  const { sound } = await Audio.Sound.createAsync(
+                    { uri: mycurrentRec.file },
+                    { shouldPlay: false }.file
+                  );
+                  setSound(sound);
+                  console.log("Playing Sound");
+                  await sound.playAsync();
+                }}
+                title="Play"
+              ></Button>
+            </View>
+          )}
+          {/* {recordings.length > 0 &&
             recordings.map((recordingLine, index) => (
               <View key={index} style={styles.row}>
                 <Text style={styles.fill}>
@@ -106,10 +133,10 @@ const HomeScreen = ({ navigation }) => {
                   title="Play"
                 ></Button>
               </View>
-            ))}
+            ))} */}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
